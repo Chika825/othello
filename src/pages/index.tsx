@@ -16,13 +16,19 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(x, y);
     const newBoard = structuredClone(board);
-    newBoard[y][x] = turnColor;
-    if (turnColor===1){
-      setTurnColor(2)
-  }else{
-    setTurnColor(1)
-  }
-    setBoard(newBoard);
+
+    if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
+      setTurnColor(3 - turnColor);
+      setBoard(newBoard);
+    }
+    // turnColor === 1 ? setTurnColor(2) : setTurnColor(1);
+    // setTurnColor(turnColor === 1 ? 2 : 1);
+    //setTurnColor(3 - turnColor); いかに分岐をなくすか
+    //setBoard(newBoard);
+    //const directions
+    //1.めくれる、点数 2.候補地 3.パス、2回パス
+    //npm run dev
   };
   return (
     <div className={styles.container}>
