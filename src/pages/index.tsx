@@ -49,9 +49,33 @@ const Home = () => {
       }
     });
   */
+    let n;
+    n = y;
 
     {
       if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
+        // 色をひっくり返す
+
+        while (board[n + 1][x] !== turnColor && board[n + 2][x] === turnColor) {
+          if (board[n + 1][x] === 0) {
+            break;
+          }
+          while (board[n + 2][x] !== turnColor) {
+            if (board[n + 2][x] === 0) {
+              break;
+            }
+            n++;
+          }
+          /*
+          if (board[n + 2][x] !== turnColor) {
+            console.log("korroke")
+            break;
+          }
+          */
+          n++;
+          newBoard[n][x] = turnColor;
+          //setBoard(newBoard);
+        }
         newBoard[y][x] = turnColor;
         setTurnColor(3 - turnColor); //いかに分岐をなくすか
         // turnColor === 1 ? setTurnColor(2) : setTurnColor(1);
