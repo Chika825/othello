@@ -51,300 +51,39 @@ const Home = () => {
     });
   */
 
+    //座標設定が違う
+
     const color_reverse = () => {
-      let n;
+      let n: number;
       n = y;
-      let m;
+      let sc_check_y;
+      sc_check_y = y;
+      let m: number;
       m = x;
-      // 色をひっくり返す
-      // 
-      color_reverse_break1: while (board[n + 1][x] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n + 1][x] === 0) {
-          break;
-        }
-        while (board[n + 2][x] !== turnColor) {
-          if (board[n + 2][x] === 0) {
-            break color_reverse_break1;
-          }
-          ++n;
-          if (board[n + 1][x] === turnColor) {
-            break color_reverse_break1;
-          }
-          newBoard[n][x] = turnColor;
-          console.log('hikkuri'); //最初の色だけ引っ掛ける
-        }
-        while (board[n + 1][x] === 3 - turnColor) {
-          if (board[n + 1][x] === 0) {
-            break color_reverse_break1;
-          }
-          ++n;
-          newBoard[n][x] = turnColor;
-          console.log('test1');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        ++n;
-        newBoard[n][x] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
 
-      color_reverse_break2: while (board[n - 1][x] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n - 1][x] === 0) {
-          break;
-        }
-        while (board[n - 2][x] !== turnColor) {
-          if (board[n - 2][x] === 0) {
-            break color_reverse_break2;
+      //既存の場所設置禁止
+      if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
+        console.log('test');
+      } else {
+        // y+1,xの行の確認(下方向を参照する)
+        // 自分のターンの色を探す、かつ定義内である必要あり
+        while (board[sc_check_y][x] === turnColor || board[sc_check_y + 1] !== undefined) {
+          // 自分の色があったら違う色すべてひっくり返す
+          if (board[sc_check_y][x] === turnColor) {
+            // さらに自分の色の一つ手前に違う色が存在することを確認 符号注意
+            if (board[sc_check_y - 1][x] === 3 - turnColor) {
+              // 挟まれた違う色をすべて反転
+              while (board[n + 1][x] === 3 - turnColor) {
+                ++n;
+                newBoard[n][x] = turnColor;
+              }
+              //押した座標の色変更
+              newBoard[y][x] = turnColor;
+              setTurnColor(3 - turnColor);
+            }
           }
-          --n;
+          ++sc_check_y;
         }
-        while (board[n - 1][x] === 3 - turnColor) {
-          if (board[n - 1][x] === 0) {
-            break color_reverse_break2;
-          }
-          --n;
-          newBoard[n][x] = turnColor;
-          console.log('test2');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        --n;
-        newBoard[n][x] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break3: while (board[y][m + 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[y][m + 1] === 0) {
-          break;
-        }
-        while (board[y][m + 2] !== turnColor) {
-          if (board[y][m + 2] === 0) {
-            break color_reverse_break3;
-          }
-          ++m;
-        }
-        while (board[y][m + 1] === 3 - turnColor) {
-          if (board[y][m + 1] === 0) {
-            break color_reverse_break3;
-          }
-          ++m;
-          newBoard[y][m] = turnColor;
-          console.log('test3');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        ++m;
-        newBoard[y][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break4: while (board[y][m - 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[y][m - 1] === 0) {
-          break;
-        }
-        while (board[y][m - 2] !== turnColor) {
-          if (board[y][m - 2] === 0) {
-            break color_reverse_break4;
-          }
-          --m;
-        }
-        while (board[y][m - 1] === 3 - turnColor) {
-          if (board[y][m - 1] === 0) {
-            break color_reverse_break4;
-          }
-          --m;
-          newBoard[y][m] = turnColor;
-          console.log('test4');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        --m;
-        newBoard[y][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break5: while (board[n + 1][m + 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n + 1][m + 1] === 0) {
-          break;
-        }
-        while (board[n + 1][m + 2] !== turnColor) {
-          if (board[n + 1][m + 2] === 0) {
-            break color_reverse_break5;
-          }
-          ++m;
-          ++n;
-        }
-        while (board[n + 1][m + 1] === 3 - turnColor) {
-          if (board[n + 1][m + 1] === 0) {
-            break color_reverse_break5;
-          }
-          ++m;
-          ++n;
-          newBoard[n][m] = turnColor;
-          console.log('test5');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        ++m;
-        ++n;
-        newBoard[n][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break6: while (board[n - 1][m + 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n - 1][m + 1] === 0) {
-          break;
-        }
-        while (board[n - 1][m + 2] !== turnColor) {
-          if (board[n - 1][m + 2] === 0) {
-            break color_reverse_break6;
-          }
-          ++m;
-          --n;
-        }
-        while (board[n - 1][m + 1] === 3 - turnColor) {
-          if (board[n - 1][m + 1] === 0) {
-            break color_reverse_break6;
-          }
-          ++m;
-          --n;
-          newBoard[n][m] = turnColor;
-          console.log('test6');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        ++m;
-        --n;
-        newBoard[n][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break7: while (board[n + 1][m - 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n + 1][m - 1] === 0) {
-          break
-        }
-        while (board[n + 1][m - 2] !== turnColor) {
-          if (board[n + 1][m - 2] === 0) {
-            break color_reverse_break7;
-          }
-          --m;
-          ++n;
-        }
-        while (board[n + 1][m - 1] === 3 - turnColor) {
-          if (board[n + 1][m - 1] === 0) {
-            break color_reverse_break7;
-          }
-          --m;
-          ++n;
-          newBoard[n][m] = turnColor;
-          console.log('test7');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        --m;
-        ++n;
-        newBoard[n][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
-      }
-
-      color_reverse_break8: while (board[n - 1][m - 1] !== turnColor) {
-        if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-          break;
-        }
-        if (board[n - 1][m - 1] === 0) {
-          break;
-        }
-        while (board[n - 1][m - 2] !== turnColor) {
-          if (board[n - 1][m - 2] === 0) {
-            break color_reverse_break8;
-          }
-          --m;
-          --n;
-        }
-        while (board[n - 1][m - 1] === 3 - turnColor) {
-          if (board[n - 1][m - 1] === 0) {
-            break color_reverse_break8;
-          }
-          --m;
-          --n;
-          newBoard[n][m] = turnColor;
-          console.log('test8');
-        }
-        /*
-        if (board[n + 2][x] !== turnColor) {
-          console.log("korroke")
-          break;
-        }
-        */
-        --m;
-        --n;
-        newBoard[n][m] = turnColor;
-        newBoard[y][x] = turnColor;
-        setTurnColor(3 - turnColor);
-        //setBoard(newBoard);
       }
     };
 
