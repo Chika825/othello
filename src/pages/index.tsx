@@ -51,7 +51,8 @@ const Home = () => {
     });
   */
 
-    //座標設定が違う
+    let color_change;
+    color_change = false;
 
     const color_reverse = () => {
       let n: number;
@@ -60,16 +61,24 @@ const Home = () => {
       sc_check_y = y;
       let m: number;
       m = x;
+      let sc_check_x;
+      sc_check_x = x;
 
       //既存の場所設置禁止
       if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-        console.log('test');
+        console.log('already placed');
       } else {
         console.log('rule 1 ok');
         // y+1,xの行の確認(下方向を参照する)
         // 自分のターンの色を探す、かつ定義内である必要あり
-        while (board[sc_check_y][x] === turnColor || board[sc_check_y + 1] !== undefined) {
+        // Attention!! 下記の!==turnColorは===から変更しました
+        while (board[sc_check_y + 1] !== undefined || board[sc_check_y][x] !== turnColor) {
           console.log('y+1,x check');
+          // チェックしようとしている一つ先のマスが未定義の場合中止
+          // また隣の色が置こうとしている色と同じである場合中止
+          if (board[n + 1] === undefined || board[n + 1][x] === turnColor) {
+            break;
+          }
           // 自分の色があったら違う色すべてひっくり返す
           if (board[sc_check_y][x] === turnColor) {
             // さらに自分の色の一つ手前に違う色が存在することを確認 符号注意
@@ -81,20 +90,28 @@ const Home = () => {
               }
               //押した座標の色変更
               newBoard[y][x] = turnColor;
-              setTurnColor(3 - turnColor);
+              // 色変更フラグの変更(こうしないと複数変わるとき色バグる)
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
             }
           }
           ++sc_check_y;
+          // チェックしようとしている一つ先のマスが未定義の場合中止
           // さらに空のマスが無いか確認
-          if (board[sc_check_y][x] === 0) {
-            console.log("empty cell")
+          if (board[sc_check_y] === undefined || board[sc_check_y][x] === 0) {
+            console.log('empty cell');
             break;
           }
         }
         sc_check_y = y;
+        n = y;
         // y-1,x(上方向の行を確認)
-        while (board[sc_check_y][x] === turnColor || board[sc_check_y - 1] !== undefined) {
+        while (board[sc_check_y - 1] !== undefined || board[sc_check_y][x] !== turnColor) {
           console.log('y-1,x check');
+          if (board[n - 1] === undefined || board[n - 1][x] === turnColor) {
+            break;
+          }
           if (board[sc_check_y][x] === turnColor) {
             if (board[sc_check_y + 1][x] === 3 - turnColor) {
               while (board[n - 1][x] === 3 - turnColor) {
@@ -102,19 +119,253 @@ const Home = () => {
                 newBoard[n][x] = turnColor;
               }
               newBoard[y][x] = turnColor;
-              setTurnColor(3 - turnColor);
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
             }
           }
           --sc_check_y;
-          if (board[sc_check_y][x] === 0) {
-            console.log("empty cell")
+          if (board[sc_check_y] === undefined || board[sc_check_y][x] === 0) {
+            console.log('empty cell');
             break;
           }
         }
+        sc_check_y = y;
+        n = y;
         // y,x+1(右方向の列を確認)
+        while (board[sc_check_x + 1] !== undefined || board[y][sc_check_x] !== turnColor) {
+          console.log('y,x+1 check');
+          if (board[m + 1] === undefined || board[y][m + 1] === turnColor) {
+            break;
+          }
+          if (board[y][sc_check_x] === turnColor) {
+            if (board[y][sc_check_x - 1] === 3 - turnColor) {
+              while (board[y][m + 1] === 3 - turnColor) {
+                ++m;
+                newBoard[y][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          ++sc_check_x;
+          if (board[sc_check_x] === undefined || board[y][sc_check_x] === 0) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_x = x;
+        m = x;
+        // y,x-1(左方向の列を確認)
+        while (board[sc_check_x - 1] !== undefined || board[y][sc_check_x] !== turnColor) {
+          console.log('y,x-1 check');
+          if (board[m - 1] === undefined || board[y][m - 1] === turnColor) {
+            break;
+          }
+          if (board[y][sc_check_x] === turnColor) {
+            if (board[y][sc_check_x + 1] === 3 - turnColor) {
+              while (board[y][m - 1] === 3 - turnColor) {
+                --m;
+                newBoard[y][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          --sc_check_x;
+          if (board[sc_check_x] === undefined || board[y][sc_check_x] === 0) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_x = x;
+        m = x;
+        // y+1,x+1(右斜め下方向を確認)
+        while (
+          board[sc_check_y + 1] !== undefined ||
+          board[sc_check_x + 1] !== undefined ||
+          board[sc_check_y][sc_check_x] !== turnColor
+        ) {
+          console.log('y+1,x+1 check');
+          if (
+            board[n + 1] === undefined ||
+            board[m + 1] === undefined ||
+            board[n + 1][m + 1] === turnColor
+          ) {
+            break;
+          }
+          if (board[sc_check_y][sc_check_x] === turnColor) {
+            if (board[sc_check_y - 1][sc_check_x - 1] === 3 - turnColor) {
+              while (board[n + 1][m + 1] === 3 - turnColor) {
+                ++n;
+                ++m;
+                newBoard[n][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          ++sc_check_y;
+          ++sc_check_x;
+          if (
+            board[sc_check_y] === undefined ||
+            board[sc_check_x] === undefined ||
+            board[sc_check_y][sc_check_x] === 0
+          ) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_y = y;
+        sc_check_x = x;
+        n = y;
+        m = x;
+        // y+1,x-1(左斜め下方向を確認)
+        while (
+          board[sc_check_y + 1] !== undefined ||
+          board[sc_check_x - 1] !== undefined ||
+          board[sc_check_y][sc_check_x] !== turnColor
+        ) {
+          console.log('y+1,x-1 check');
+          if (
+            board[n + 1] === undefined ||
+            board[m - 1] === undefined ||
+            board[n + 1][m - 1] === turnColor
+          ) {
+            break;
+          }
+          if (board[sc_check_y][sc_check_x] === turnColor) {
+            if (board[sc_check_y - 1][sc_check_x + 1] === 3 - turnColor) {
+              while (board[n + 1][m - 1] === 3 - turnColor) {
+                ++n;
+                --m;
+                newBoard[n][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          ++sc_check_y;
+          --sc_check_x;
+          if (
+            board[sc_check_y] === undefined ||
+            board[sc_check_x] === undefined ||
+            board[sc_check_y][sc_check_x] === 0
+          ) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_y = y;
+        sc_check_x = x;
+        n = y;
+        m = x;
+        // y-1,x-1(左斜め上方向を確認)
+        while (
+          board[sc_check_y - 1] !== undefined ||
+          board[sc_check_x - 1] !== undefined ||
+          board[sc_check_y][sc_check_x] !== turnColor
+        ) {
+          console.log('y-1,x-1 check');
+          if (
+            board[n - 1] === undefined ||
+            board[m - 1] === undefined ||
+            board[n - 1][m - 1] === turnColor
+          ) {
+            break;
+          }
+          if (board[sc_check_y][sc_check_x] === turnColor) {
+            if (board[sc_check_y + 1][sc_check_x + 1] === 3 - turnColor) {
+              while (board[n - 1][m - 1] === 3 - turnColor) {
+                --n;
+                --m;
+                newBoard[n][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          --sc_check_y;
+          --sc_check_x;
+          if (
+            board[sc_check_y] === undefined ||
+            board[sc_check_x] === undefined ||
+            board[sc_check_y][sc_check_x] === 0
+          ) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_y = y;
+        sc_check_x = x;
+        n = y;
+        m = x;
+        // y-1,x+1(右斜め上方向を確認)
+        while (
+          board[sc_check_y - 1] !== undefined ||
+          board[sc_check_x + 1] !== undefined ||
+          board[sc_check_y][sc_check_x] !== turnColor
+        ) {
+          console.log('y-1,x+1 check');
+          if (
+            board[n - 1] === undefined ||
+            board[m + 1] === undefined ||
+            board[n - 1][m + 1] === turnColor
+          ) {
+            break;
+          }
+          if (board[sc_check_y][sc_check_x] === turnColor) {
+            if (board[sc_check_y + 1][sc_check_x - 1] === 3 - turnColor) {
+              while (board[n - 1][m + 1] === 3 - turnColor) {
+                --n;
+                ++m;
+                newBoard[n][m] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              color_change = true;
+              //setTurnColor(3 - turnColor);
+              //console.log('--color change');
+            }
+          }
+          --sc_check_y;
+          ++sc_check_x;
+          if (
+            board[sc_check_y] === undefined ||
+            board[sc_check_x] === undefined ||
+            board[sc_check_y][sc_check_x] === 0
+          ) {
+            console.log('empty cell');
+            break;
+          }
+        }
+        sc_check_y = y;
+        sc_check_x = x;
+        n = y;
+        m = x;
       }
     };
 
+    console.log('---Start Check---');
+    color_reverse();
+    setBoard(newBoard);
+    if (color_change === true) {
+      setTurnColor(3 - turnColor);
+      console.log('--color-change');
+    }
+    color_change = false;
+    console.log('---Ended Check---');
+
+    /*
     {
       if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
         console.log('set1');
@@ -170,9 +421,17 @@ const Home = () => {
       }
     }
     setBoard(newBoard);
+    */
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     //npm run dev
+
+    /*
+    <div className={styles.score}>
+      score 黒: {black_points} 白: {white_points}
+    </div>
+    */
+
   };
   return (
     <div className={styles.container}>
@@ -189,6 +448,9 @@ const Home = () => {
             </div>
           )),
         )}
+      </div>
+      <div className={styles.score}>
+        score
       </div>
     </div>
   );

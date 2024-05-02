@@ -11,8 +11,10 @@
 .boardStyle {
   display: flex;
   flex-wrap: wrap;
-  width: 640px;
-  height: 640px;
+  width: 100vw;
+  max-width: 640px;
+  height: 100vh;
+  max-height: 640px;
   background-color: green;
 }
 
@@ -20,10 +22,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   /* float: left; */
-  width: 80px;
-  height: 80px;
+  width: 12.5%;
+  max-width: 80px;
+  height: 12.5%;
+  max-height: 80px;
   text-align: center;
   border-color: black;
   border-style: solid;
@@ -32,8 +36,15 @@
 }
 
 .stoneStyle {
-  width: 56px;
-  height: 56px;
+  width: 70%;
+  max-width: 56px;
+  height: 70%;
+  max-height: 56px;
   background-color: white;
   border-radius: 50%;
+}
+
+.score {
+  width: auto;
+  margin: 5vh 5vw 1vh;
 }
