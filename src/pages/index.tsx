@@ -65,9 +65,11 @@ const Home = () => {
       if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
         console.log('test');
       } else {
+        console.log('rule 1 ok');
         // y+1,xの行の確認(下方向を参照する)
         // 自分のターンの色を探す、かつ定義内である必要あり
         while (board[sc_check_y][x] === turnColor || board[sc_check_y + 1] !== undefined) {
+          console.log('y+1,x check');
           // 自分の色があったら違う色すべてひっくり返す
           if (board[sc_check_y][x] === turnColor) {
             // さらに自分の色の一つ手前に違う色が存在することを確認 符号注意
@@ -83,7 +85,33 @@ const Home = () => {
             }
           }
           ++sc_check_y;
+          // さらに空のマスが無いか確認
+          if (board[sc_check_y][x] === 0) {
+            console.log("empty cell")
+            break;
+          }
         }
+        sc_check_y = y;
+        // y-1,x(上方向の行を確認)
+        while (board[sc_check_y][x] === turnColor || board[sc_check_y - 1] !== undefined) {
+          console.log('y-1,x check');
+          if (board[sc_check_y][x] === turnColor) {
+            if (board[sc_check_y + 1][x] === 3 - turnColor) {
+              while (board[n - 1][x] === 3 - turnColor) {
+                --n;
+                newBoard[n][x] = turnColor;
+              }
+              newBoard[y][x] = turnColor;
+              setTurnColor(3 - turnColor);
+            }
+          }
+          --sc_check_y;
+          if (board[sc_check_y][x] === 0) {
+            console.log("empty cell")
+            break;
+          }
+        }
+        // y,x+1(右方向の列を確認)
       }
     };
 
