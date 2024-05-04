@@ -431,7 +431,34 @@ const Home = () => {
       score 黒: {black_points} 白: {white_points}
     </div>
     */
-
+  };
+  let black_p: number;
+  let white_p: number;
+  let score_points_b: number;
+  let score_points_w: number;
+  let color;
+  black_p = 0;
+  white_p = 0;
+  const Score = () => {
+    for (let row = 0; row < 8; row++) {
+      console.log('korroke');
+      for (let column = 0; column < 8; column++) {
+        color = board[row][column];
+        if (color === 1) {
+          ++black_p;
+          console.log(black_p);
+        } else if (color === 2) {
+          ++white_p;
+        }
+      }
+    }
+    score_points_b = black_p;
+    score_points_w = white_p;
+    return (
+      <div className={styles.score}>
+        score: 黒:{score_points_b/2} 白:{score_points_w/2}
+      </div>
+    );
   };
   return (
     <div className={styles.container}>
@@ -449,9 +476,7 @@ const Home = () => {
           )),
         )}
       </div>
-      <div className={styles.score}>
-        score
-      </div>
+      <Score />
     </div>
   );
 };
