@@ -455,7 +455,7 @@ const Home = () => {
     score_points_b = black_p;
     score_points_w = white_p;
     return (
-      <div className={styles.score}>
+      <div className={styles.score} suppressHydrationWarning={true}>
         score: 黒:{score_points_b/2} 白:{score_points_w/2}
       </div>
     );
