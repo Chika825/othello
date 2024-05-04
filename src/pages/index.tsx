@@ -441,12 +441,11 @@ const Home = () => {
   white_p = 0;
   const Score = () => {
     for (let row = 0; row < 8; row++) {
-      console.log('korroke');
+      //console.log('korroke');
       for (let column = 0; column < 8; column++) {
         color = board[row][column];
         if (color === 1) {
           ++black_p;
-          console.log(black_p);
         } else if (color === 2) {
           ++white_p;
         }
