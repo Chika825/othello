@@ -3,18 +3,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  min-height: 100vh;
-  padding: 0 0.5rem;
+  width: 100vmin;
+  height: 100vmin;
+  margin: auto;
 }
 
 .boardStyle {
   display: flex;
   flex-wrap: wrap;
-  width: 100vw;
-  max-width: 640px;
-  height: 100vh;
-  max-height: 640px;
+  width: 100vmin;
+  max-width: 90vmin;
+  height: 100vmin;
+  max-height: 90vmin;
+  margin: 20px;
   background-color: green;
 }
 
@@ -25,9 +26,7 @@
 
   /* float: left; */
   width: 12.5%;
-  max-width: 80px;
   height: 12.5%;
-  max-height: 80px;
   text-align: center;
   border-color: black;
   border-style: solid;

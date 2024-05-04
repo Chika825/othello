@@ -72,7 +72,7 @@ const Home = () => {
         // y+1,xの行の確認(下方向を参照する)
         // 自分のターンの色を探す、かつ定義内である必要あり
         // Attention!! 下記の!==turnColorは===から変更しました
-        while (board[sc_check_y + 1] !== undefined || board[sc_check_y][x] !== turnColor) {
+        while (board[sc_check_y] !== undefined || board[sc_check_y][x] !== turnColor) {
           console.log('y+1,x check');
           // チェックしようとしている一つ先のマスが未定義の場合中止
           // また隣の色が置こうとしている色と同じである場合中止
@@ -107,7 +107,7 @@ const Home = () => {
         sc_check_y = y;
         n = y;
         // y-1,x(上方向の行を確認)
-        while (board[sc_check_y - 1] !== undefined || board[sc_check_y][x] !== turnColor) {
+        while (board[sc_check_y] !== undefined || board[sc_check_y][x] !== turnColor) {
           console.log('y-1,x check');
           if (board[n - 1] === undefined || board[n - 1][x] === turnColor) {
             break;
@@ -133,7 +133,7 @@ const Home = () => {
         sc_check_y = y;
         n = y;
         // y,x+1(右方向の列を確認)
-        while (board[sc_check_x + 1] !== undefined || board[y][sc_check_x] !== turnColor) {
+        while (board[sc_check_x] !== undefined || board[y][sc_check_x] !== turnColor) {
           console.log('y,x+1 check');
           if (board[m + 1] === undefined || board[y][m + 1] === turnColor) {
             break;
@@ -159,7 +159,7 @@ const Home = () => {
         sc_check_x = x;
         m = x;
         // y,x-1(左方向の列を確認)
-        while (board[sc_check_x - 1] !== undefined || board[y][sc_check_x] !== turnColor) {
+        while (board[sc_check_x] !== undefined || board[y][sc_check_x] !== turnColor) {
           console.log('y,x-1 check');
           if (board[m - 1] === undefined || board[y][m - 1] === turnColor) {
             break;
@@ -186,8 +186,8 @@ const Home = () => {
         m = x;
         // y+1,x+1(右斜め下方向を確認)
         while (
-          board[sc_check_y + 1] !== undefined ||
-          board[sc_check_x + 1] !== undefined ||
+          board[sc_check_y] !== undefined ||
+          board[sc_check_x] !== undefined ||
           board[sc_check_y][sc_check_x] !== turnColor
         ) {
           console.log('y+1,x+1 check');
@@ -228,8 +228,8 @@ const Home = () => {
         m = x;
         // y+1,x-1(左斜め下方向を確認)
         while (
-          board[sc_check_y + 1] !== undefined ||
-          board[sc_check_x - 1] !== undefined ||
+          board[sc_check_y] !== undefined ||
+          board[sc_check_x] !== undefined ||
           board[sc_check_y][sc_check_x] !== turnColor
         ) {
           console.log('y+1,x-1 check');
@@ -270,8 +270,8 @@ const Home = () => {
         m = x;
         // y-1,x-1(左斜め上方向を確認)
         while (
-          board[sc_check_y - 1] !== undefined ||
-          board[sc_check_x - 1] !== undefined ||
+          board[sc_check_y] !== undefined ||
+          board[sc_check_x] !== undefined ||
           board[sc_check_y][sc_check_x] !== turnColor
         ) {
           console.log('y-1,x-1 check');
@@ -312,8 +312,8 @@ const Home = () => {
         m = x;
         // y-1,x+1(右斜め上方向を確認)
         while (
-          board[sc_check_y - 1] !== undefined ||
-          board[sc_check_x + 1] !== undefined ||
+          board[sc_check_y] !== undefined ||
+          board[sc_check_x] !== undefined ||
           board[sc_check_y][sc_check_x] !== turnColor
         ) {
           console.log('y-1,x+1 check');
@@ -425,12 +425,6 @@ const Home = () => {
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     //npm run dev
-
-    /*
-    <div className={styles.score}>
-      score 黒: {black_points} 白: {white_points}
-    </div>
-    */
   };
   let black_p: number;
   let white_p: number;
@@ -455,7 +449,7 @@ const Home = () => {
     score_points_w = white_p;
     return (
       <div className={styles.score} suppressHydrationWarning={true}>
-        score: 黒:{score_points_b/2} 白:{score_points_w/2}
+        score: 黒:{score_points_b / 2} 白:{score_points_w / 2}
       </div>
     );
   };
