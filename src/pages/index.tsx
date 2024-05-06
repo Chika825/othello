@@ -424,7 +424,7 @@ const Home = () => {
     */
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
-    //npm run dev
+    // userStateを一つ増やす(候補地)
   };
   let black_p: number;
   let white_p: number;
