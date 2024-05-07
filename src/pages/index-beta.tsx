@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import styles from './index.module.css';
 //import { PassThrough } from 'stream';
 
@@ -28,7 +29,7 @@ const Home = () => {
       }
     }
   };
-  future();
+  //future();
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
     const newBoard = structuredClone(board);
@@ -383,32 +384,32 @@ const Home = () => {
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     // userStateを一つ増やす(候補地)
   };
-  let black_p: number;
-  let white_p: number;
+  //let black_p: number;
+  //let white_p: number;
   let score_points_b: number;
   let score_points_w: number;
   let color: number;
-  black_p = 0;
-  white_p = 0;
+  //black_p = 0;
+  //white_p = 0;
+  const [black_p, setCount_b] = useState(0);
+  const [white_p, setCount_w] = useState(0);
+  useEffect(() => {
+    Score(), [];
+  });
   const Score = () => {
     for (let row = 0; row < 8; row++) {
       //console.log('korroke');
       for (let column = 0; column < 8; column++) {
         color = board[row][column];
         if (color === 1) {
-          ++black_p;
+          setCount_b(black_p + 1);
         } else if (color === 2) {
-          ++white_p;
+          setCount_w(white_p + 1);
         }
       }
     }
-    score_points_b = black_p;
-    score_points_w = white_p;
-    return (
-      <div className={styles.score} suppressHydrationWarning={true}>
-        score: 黒:{score_points_b / 2} 白:{score_points_w / 2}
-      </div>
-    );
+    //score_points_b = black_p;
+    //score_points_w = white_p;
   };
   const What_color = () => {
     return (
@@ -433,7 +434,9 @@ const Home = () => {
           )),
         )}
       </div>
-      <Score />
+      <div className={styles.score} suppressHydrationWarning={true}>
+        score: 黒:{black_p} 白:{white_p}
+      </div>
       <What_color />
     </div>
   );

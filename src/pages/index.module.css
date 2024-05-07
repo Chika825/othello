@@ -45,5 +45,10 @@
 
 .score {
   width: auto;
-  margin: 5vh 5vw 1vh;
+  margin: 3vh 5vw 1vh;
+}
+
+.whatcolor {
+  width: auto;
+  margin: 0 5vw 1vh;
 }
