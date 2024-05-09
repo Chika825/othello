@@ -18,12 +18,47 @@ const Home = () => {
   const future = () => {
     let color;
     let place;
-    console.log('test');
+    //console.log('test');
     for (let row = 0; row < 8; row++) {
       for (let column = 0; column < 8; column++) {
         color = board[row][column];
         if (color === turnColor) {
           console.log(row, column);
+          // y+1,x
+          while (board[row] !== undefined || board[row][column] !== turnColor) {
+            console.log('y+1,x check');
+            // チェックしようとしている一つ先のマスが未定義の場合中止
+            // また隣の色が置こうとしている色と同じである場合中止
+            if (board[row + 1] === undefined || board[row + 1][column] === turnColor) {
+              break;
+            }
+            // 自分の色があったら違う色すべてひっくり返す
+            if (board[sc_check_y][x] === turnColor) {
+              // さらに自分の色の一つ手前に違う色が存在することを確認 符号注意
+              if (board[sc_check_y - 1][x] === 3 - turnColor) {
+                // 挟まれた違う色をすべて反転
+                while (board[n + 1][x] === 3 - turnColor) {
+                  ++n;
+                  newBoard[n][x] = turnColor;
+                }
+                //押した座標の色変更
+                newBoard[y][x] = turnColor;
+                // 色変更フラグの変更(こうしないと複数変わるとき色バグる)
+                color_change = true;
+                //setTurnColor(3 - turnColor);
+                //console.log('--color change');
+              }
+            }
+            ++sc_check_y;
+            // チェックしようとしている一つ先のマスが未定義の場合中止
+            // さらに空のマスが無いか確認
+            if (board[sc_check_y] === undefined || board[sc_check_y][x] === 0) {
+              console.log('empty cell');
+              break;
+            }
+          }
+          sc_check_y = y;
+          n = y;
         }
       }
     }
