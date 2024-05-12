@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 //import { PassThrough } from 'stream';
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
+  // 初回ロード時に使うやつ
+  // const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -14,56 +16,65 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+  const [futureboard, setFutBoard] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 3, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
 
   const future = () => {
-    let color;
-    let place;
-    //console.log('test');
-    for (let row = 0; row < 8; row++) {
-      for (let column = 0; column < 8; column++) {
-        color = board[row][column];
-        if (color === turnColor) {
-          console.log(row, column);
-          // y+1,x
-          while (board[row] !== undefined || board[row][column] !== turnColor) {
-            console.log('y+1,x check');
-            // チェックしようとしている一つ先のマスが未定義の場合中止
-            // また隣の色が置こうとしている色と同じである場合中止
-            if (board[row + 1] === undefined || board[row + 1][column] === turnColor) {
+    let y_check;
+    let x_check;
+    const boardassist = structuredClone(board);
+
+    for (let y_count = 0; y_count < 8; y_count++) {
+      for (let x_count = 0; x_count < 8; x_count++) {
+        // 自分のターンの色探す
+        if (board[y_count][x_count] === turnColor) {
+          console.log(y_count, x_count, turnColor);
+          // y-1,x check
+          // 競合阻止
+          y_check = y_count;
+          x_check = x_count;
+          // 定義なしのところまで検索
+          while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
+            // 相手の色なら検索続行
+            if (board[y_check - 1][x_check] === 3 - turnColor) {
+              --y_check;
+              continue;
+              // 自分の色が出てきたら中断
+            } else if (board[y_check - 1][x_check] === turnColor) {
+              break;
+              // 空のセルで中断
+            } else if (board[y_check - 1][x_check] === 0) {
+              boardassist[y_check - 1][x_check] = 3;
               break;
             }
-            // 自分の色があったら違う色すべてひっくり返す
-            if (board[sc_check_y][x] === turnColor) {
-              // さらに自分の色の一つ手前に違う色が存在することを確認 符号注意
-              if (board[sc_check_y - 1][x] === 3 - turnColor) {
-                // 挟まれた違う色をすべて反転
-                while (board[n + 1][x] === 3 - turnColor) {
-                  ++n;
-                  newBoard[n][x] = turnColor;
-                }
-                //押した座標の色変更
-                newBoard[y][x] = turnColor;
-                // 色変更フラグの変更(こうしないと複数変わるとき色バグる)
-                color_change = true;
-                //setTurnColor(3 - turnColor);
-                //console.log('--color change');
-              }
-            }
-            ++sc_check_y;
-            // チェックしようとしている一つ先のマスが未定義の場合中止
-            // さらに空のマスが無いか確認
-            if (board[sc_check_y] === undefined || board[sc_check_y][x] === 0) {
-              console.log('empty cell');
-              break;
-            }
+            --y_check;
           }
-          sc_check_y = y;
-          n = y;
         }
       }
     }
+    setFutBoard(boardassist);
   };
-  future();
+  /*
+  const yosokuService = () => future;
+
+  useEffect(() => {
+    // 初期化してたら処理を抜ける
+    if (!loading) {
+      return;
+    }
+    yosokuService;
+    setLoading(false);
+  }, [loading, yosokuService]);
+*/
+  //future();
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
     const newBoard = structuredClone(board);
@@ -414,6 +425,7 @@ const Home = () => {
     }
     color_change = false;
     console.log('---Ended Check---');
+    future();
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     // userStateを一つ増やす(候補地)
@@ -455,7 +467,7 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.boardStyle}>
-        {board.map((row, y) =>
+        {futureboard.map((row, y) =>
           row.map((color, x) => (
             <div className={styles.cellStyle} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
               {color !== 0 && (
