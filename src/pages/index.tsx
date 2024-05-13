@@ -26,6 +26,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+  /*
 
   const future = () => {
     let y_check;
@@ -61,7 +62,7 @@ const Home = () => {
       }
     }
     setFutBoard(boardassist);
-  };
+  };*/
   /*
   const yosokuService = () => future;
 
@@ -78,6 +79,7 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
     const newBoard = structuredClone(board);
+    const boardassist = structuredClone(board);
     /*
     const directions = [
       [0, 1],
@@ -111,6 +113,41 @@ const Home = () => {
       }
     });
   */
+
+
+    let y_check;
+    let x_check;
+    // const boardassist = structuredClone(board);
+
+    for (let y_count = 0; y_count < 8; y_count++) {
+      for (let x_count = 0; x_count < 8; x_count++) {
+        // 自分のターンの色探す
+        if (board[y_count][x_count] === turnColor) {
+          console.log(y_count, x_count, turnColor);
+          // y-1,x check
+          // 競合阻止
+          y_check = y_count;
+          x_check = x_count;
+          // 定義なしのところまで検索
+          while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
+            // 相手の色なら検索続行
+            if (board[y_check - 1][x_check] === 3 - turnColor) {
+              --y_check;
+              continue;
+              // 自分の色が出てきたら中断
+            } else if (board[y_check - 1][x_check] === turnColor) {
+              break;
+              // 空のセルで中断
+            } else if (board[y_check - 1][x_check] === 0) {
+              boardassist[y_check - 1][x_check] = 3;
+              break;
+            }
+            --y_check;
+          }
+        }
+      }
+    }
+    // setFutBoard(boardassist);
 
     let color_change;
     color_change = false;
@@ -419,13 +456,14 @@ const Home = () => {
     console.log('---Start Check---');
     color_reverse();
     setBoard(newBoard);
+    setFutBoard(boardassist);
     if (color_change === true) {
       setTurnColor(3 - turnColor);
       console.log('--color-change');
     }
     color_change = false;
     console.log('---Ended Check---');
-    future();
+    // future();
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     // userStateを一つ増やす(候補地)
