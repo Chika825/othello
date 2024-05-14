@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './index.module.css';
 //import { PassThrough } from 'stream';
 
@@ -20,49 +20,322 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 3, 0, 0, 0],
-    [0, 0, 0, 1, 2, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 3, 0, 0],
+    [0, 0, 3, 2, 1, 0, 0, 0],
+    [0, 0, 0, 3, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-  /*
 
   const future = () => {
     let y_check;
     let x_check;
+    let flag;
     const boardassist = structuredClone(board);
 
     for (let y_count = 0; y_count < 8; y_count++) {
       for (let x_count = 0; x_count < 8; x_count++) {
         // 自分のターンの色探す
         if (board[y_count][x_count] === turnColor) {
-          console.log(y_count, x_count, turnColor);
-          // y-1,x check
           // 競合阻止
+          // y-1,x check
           y_check = y_count;
           x_check = x_count;
+          console.log(y_check, x_check, turnColor);
           // 定義なしのところまで検索
           while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
+            console.log('y-1,x check');
             // 相手の色なら検索続行
-            if (board[y_check - 1][x_check] === 3 - turnColor) {
+            if (board[y_check - 1] !== undefined) {
+              if (board[y_check - 1][x_check] === 3 - turnColor) {
+                --y_check;
+                flag = true;
+                continue;
+                // 自分の色が出てきたら中断
+              } else if (board[y_check - 1][x_check] === turnColor) {
+                console.log('stopped');
+                break;
+                // 空のセルで中断
+              } else if (board[y_check - 1][x_check] === 0) {
+                // 一度は相手の色を検出してないとbreak
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check - 1][x_check] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
               --y_check;
-              continue;
-              // 自分の色が出てきたら中断
-            } else if (board[y_check - 1][x_check] === turnColor) {
-              break;
-              // 空のセルで中断
-            } else if (board[y_check - 1][x_check] === 0) {
-              boardassist[y_check - 1][x_check] = 3;
+            } else {
               break;
             }
-            --y_check;
+          }
+          //y+1,x check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (board[y_check] !== undefined || board[y_check + 1][x_check] !== 0) {
+            console.log('y+1,x check');
+            if (board[y_check + 1] !== undefined) {
+              if (board[y_check + 1][x_check] === 3 - turnColor) {
+                ++y_check;
+                flag = true;
+                continue;
+              } else if (board[y_check + 1][x_check] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check + 1][x_check] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check + 1][x_check] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              ++y_check;
+            } else {
+              break;
+            }
+          }
+          // y,x-1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (board[x_check] !== undefined || board[y_check][x_check - 1] !== 0) {
+            console.log('y,x-1 check');
+            if (board[x_check - 1] !== undefined) {
+              if (board[y_check][x_check - 1] === 3 - turnColor) {
+                --x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check][x_check - 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check][x_check - 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check][x_check - 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              --x_check;
+            } else {
+              break;
+            }
+          }
+          //y,x+1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (board[x_check] !== undefined || board[y_check][x_check + 1] !== 0) {
+            console.log('y,x+1 check');
+            if (board[x_check + 1] !== undefined) {
+              if (board[y_check][x_check + 1] === 3 - turnColor) {
+                ++x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check][x_check + 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check][x_check + 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check][x_check + 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              ++x_check;
+            } else {
+              break;
+            }
+          }
+          //y-1,x-1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (
+            board[x_check] !== undefined ||
+            board[y_check] !== undefined ||
+            board[y_check - 1][x_check - 1] !== 0
+          ) {
+            console.log('y-1,x-1 check');
+            if (board[y_check - 1] !== undefined || board[x_check - 1] !== undefined) {
+              if (board[y_check - 1][x_check - 1] === 3 - turnColor) {
+                --y_check;
+                --x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check - 1][x_check - 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check - 1][x_check - 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check - 1][x_check - 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              --y_check;
+              --x_check;
+            } else {
+              break;
+            }
+          }
+          //y+1,x-1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (
+            board[x_check] !== undefined ||
+            board[y_check] !== undefined ||
+            board[y_check + 1][x_check - 1] !== 0
+          ) {
+            console.log('y+1,x-1 check');
+            if (board[y_check + 1][x_check - 1] !== undefined) {
+              if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
+                ++y_check;
+                --x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check + 1][x_check - 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check + 1][x_check - 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check + 1][x_check - 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              ++y_check;
+              --x_check;
+            } else {
+              break;
+            }
+          }
+          //y-1,x+1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (
+            board[x_check] !== undefined ||
+            board[y_check] !== undefined ||
+            board[y_check - 1][x_check + 1] !== 0
+          ) {
+            console.log('y-1,x+1 check');
+            if (board[y_check - 1][x_check + 1] !== undefined) {
+              if (board[y_check - 1][x_check + 1] === 3 - turnColor) {
+                --y_check;
+                ++x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check - 1][x_check + 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check - 1][x_check + 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check - 1][x_check + 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              --y_check;
+              ++x_check;
+            } else {
+              break;
+            }
+          }
+          //y+1,x+1 check
+          y_check = y_count;
+          x_check = x_count;
+          console.log(y_check, x_check, turnColor);
+          while (
+            board[x_check] !== undefined ||
+            board[y_check] !== undefined ||
+            board[y_check + 1][x_check + 1] !== 0
+          ) {
+            console.log('y+1,x-1 check');
+            if (board[y_check + 1][x_check - 1] !== undefined) {
+              if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
+                ++y_check;
+                ++x_check;
+                flag = true;
+                continue;
+              } else if (board[y_check + 1][x_check + 1] === turnColor) {
+                console.log('stopped');
+                break;
+              } else if (board[y_check + 1][x_check + 1] === 0) {
+                if (flag === true) {
+                  if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                    console.log('cancel');
+                    break;
+                  } else {
+                    console.log('koroke');
+                    boardassist[y_check + 1][x_check + 1] = 3;
+                    flag = false;
+                    break;
+                  }
+                }
+                break;
+              }
+              ++y_check;
+              ++x_check;
+            } else {
+              break;
+            }
           }
         }
       }
     }
     setFutBoard(boardassist);
-  };*/
+  };
   /*
   const yosokuService = () => future;
 
@@ -79,7 +352,7 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
     const newBoard = structuredClone(board);
-    const boardassist = structuredClone(board);
+    // const boardassist = structuredClone(board);
     /*
     const directions = [
       [0, 1],
@@ -114,7 +387,7 @@ const Home = () => {
     });
   */
 
-
+    /*
     let y_check;
     let x_check;
     // const boardassist = structuredClone(board);
@@ -146,7 +419,7 @@ const Home = () => {
           }
         }
       }
-    }
+    }*/
     // setFutBoard(boardassist);
 
     let color_change;
@@ -456,14 +729,14 @@ const Home = () => {
     console.log('---Start Check---');
     color_reverse();
     setBoard(newBoard);
-    setFutBoard(boardassist);
+    future();
     if (color_change === true) {
       setTurnColor(3 - turnColor);
       console.log('--color-change');
     }
     color_change = false;
     console.log('---Ended Check---');
-    // future();
+    future();
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
     // userStateを一つ増やす(候補地)
