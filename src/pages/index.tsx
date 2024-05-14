@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import styles from './index.module.css';
-//import { PassThrough } from 'stream';
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
-  // 初回ロード時に使うやつ
-  // const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -113,7 +110,10 @@ const Home = () => {
           y_check = y_count;
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
-          while (board[x_check] !== undefined || board[y_check][x_check - 1] !== 0) {
+          while (
+            (board[y_check] !== undefined && board[y_check][x_check] !== undefined) ||
+            board[y_check][x_check - 1] !== 0
+          ) {
             console.log('y,x-1 check');
             if (board[x_check - 1] !== undefined) {
               if (board[y_check][x_check - 1] === 3 - turnColor) {
@@ -146,7 +146,10 @@ const Home = () => {
           y_check = y_count;
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
-          while (board[x_check] !== undefined || board[y_check][x_check + 1] !== 0) {
+          while (
+            (board[y_check] !== undefined && board[y_check][x_check] !== undefined) ||
+            board[y_check][x_check + 1] !== 0
+          ) {
             console.log('y,x+1 check');
             if (board[x_check + 1] !== undefined) {
               if (board[y_check][x_check + 1] === 3 - turnColor) {
@@ -180,12 +183,11 @@ const Home = () => {
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
           while (
-            board[x_check] !== undefined ||
-            board[y_check] !== undefined ||
+            (board[y_check] !== undefined && board[y_check][x_check] !== undefined) ||
             board[y_check - 1][x_check - 1] !== 0
           ) {
             console.log('y-1,x-1 check');
-            if (board[y_check - 1] !== undefined || board[x_check - 1] !== undefined) {
+            if (board[y_check - 1] !== undefined && board[y_check - 1][x_check - 1] !== undefined) {
               if (board[y_check - 1][x_check - 1] === 3 - turnColor) {
                 --y_check;
                 --x_check;
@@ -219,12 +221,11 @@ const Home = () => {
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
           while (
-            board[x_check] !== undefined ||
-            board[y_check] !== undefined ||
+            (board[y_check] !== undefined && board[y_check][x_check] !== undefined) ||
             board[y_check + 1][x_check - 1] !== 0
           ) {
             console.log('y+1,x-1 check');
-            if (board[y_check + 1] !== undefined || board[x_check - 1] !== undefined) {
+            if (board[y_check + 1] !== undefined && board[y_check + 1][x_check - 1] !== undefined) {
               if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
                 ++y_check;
                 --x_check;
@@ -258,12 +259,11 @@ const Home = () => {
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
           while (
-            board[x_check] !== undefined ||
-            board[y_check] !== undefined ||
+            (board[y_check] !== undefined && board[y_check][x_check] !== undefined) ||
             board[y_check - 1][x_check + 1] !== 0
           ) {
             console.log('y-1,x+1 check');
-            if (board[y_check - 1] !== undefined || board[x_check + 1] !== undefined) {
+            if (board[y_check - 1] !== undefined && board[y_check - 1][x_check + 1] !== undefined) {
               if (board[y_check - 1][x_check + 1] === 3 - turnColor) {
                 --y_check;
                 ++x_check;
@@ -297,13 +297,12 @@ const Home = () => {
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
           while (
-            board[x_check] !== undefined ||
-            board[y_check] !== undefined ||
+            (board[y_check] !== undefined && board[x_check] !== undefined) ||
             board[y_check + 1][x_check + 1] !== 0
           ) {
-            console.log('y+1,x-1 check');
-            if (board[y_check + 1] !== undefined || board[x_check - 1] !== undefined) {
-              if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
+            console.log('y+1,x+1 check');
+            if (board[y_check + 1] !== undefined && board[y_check + 1][x_check + 1] !== undefined) {
+              if (board[y_check + 1][x_check + 1] === 3 - turnColor) {
                 ++y_check;
                 ++x_check;
                 flag = true;
