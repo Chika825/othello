@@ -45,15 +45,51 @@ const Home = () => {
       for (let x_count = 0; x_count < 8; x_count++) {
         // 自分のターンの色探す
         if (board[y_count][x_count] === turnColor) {
-          for (const dir of directions){
-            for (let n=1; n<8; n+=1) {
-              const dx = dir[0] * n
-              const dy = dir[1] * n
-              console.log("dx",dx,"dy",dy)
-              
+          for (const dir of directions) {
+            for (let n = 1; n < 8; n += 1) {
+              const dx = dir[0] * n;
+              const dy = dir[1] * n;
+              console.log('dx', dx, 'dy', dy);
+              // y-1,x check
+              y_check = y_count;
+              x_check = x_count;
+              console.log(y_check, x_check, turnColor);
+              // 定義なしのところまで検索
+              while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
+                console.log('y-1,x check');
+                // 相手の色なら検索続行
+                if (board[y_check - 1] !== undefined) {
+                  if (board[y_check - 1][x_check] === 3 - turnColor) {
+                    --y_check;
+                    flag = true;
+                    continue;
+                    // 自分の色が出てきたら中断
+                  } else if (board[y_check - 1][x_check] === turnColor) {
+                    console.log('stopped');
+                    break;
+                    // 空のセルで中断
+                  } else if (board[y_check - 1][x_check] === 0) {
+                    // 一度は相手の色を検出してないとbreak
+                    if (flag === true) {
+                      if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
+                        console.log('cancel');
+                        break;
+                      } else {
+                        console.log('koroke');
+                        boardassist[y_check - 1][x_check] = 3;
+                        flag = false;
+                        break;
+                      }
+                    }
+                    break;
+                  }
+                  --y_check;
+                } else {
+                  break;
+                }
+              }
             }
           }
-          // 競合阻止
           // y-1,x check
           y_check = y_count;
           x_check = x_count;
@@ -405,41 +441,6 @@ const Home = () => {
     });
   */
 
-    /*
-    let y_check;
-    let x_check;
-    // const boardassist = structuredClone(board);
-
-    for (let y_count = 0; y_count < 8; y_count++) {
-      for (let x_count = 0; x_count < 8; x_count++) {
-        // 自分のターンの色探す
-        if (board[y_count][x_count] === turnColor) {
-          console.log(y_count, x_count, turnColor);
-          // y-1,x check
-          // 競合阻止
-          y_check = y_count;
-          x_check = x_count;
-          // 定義なしのところまで検索
-          while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
-            // 相手の色なら検索続行
-            if (board[y_check - 1][x_check] === 3 - turnColor) {
-              --y_check;
-              continue;
-              // 自分の色が出てきたら中断
-            } else if (board[y_check - 1][x_check] === turnColor) {
-              break;
-              // 空のセルで中断
-            } else if (board[y_check - 1][x_check] === 0) {
-              boardassist[y_check - 1][x_check] = 3;
-              break;
-            }
-            --y_check;
-          }
-        }
-      }
-    }*/
-    // setFutBoard(boardassist);
-
     let color_change;
     color_change = false;
 
@@ -509,8 +510,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           --sc_check_y;
@@ -535,8 +534,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           ++sc_check_x;
@@ -561,8 +558,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           --sc_check_x;
@@ -596,8 +591,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           ++sc_check_y;
@@ -638,8 +631,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           ++sc_check_y;
@@ -680,8 +671,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           --sc_check_y;
@@ -722,8 +711,6 @@ const Home = () => {
               }
               newBoard[y][x] = turnColor;
               color_change = true;
-              //setTurnColor(3 - turnColor);
-              //console.log('--color change');
             }
           }
           --sc_check_y;
@@ -757,7 +744,6 @@ const Home = () => {
     future();
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
-    // userStateを一つ増やす(候補地)
   };
   let black_p: number;
   let white_p: number;
