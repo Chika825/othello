@@ -93,6 +93,7 @@ const Home = () => {
                   }
                 }
               } else {
+                flag = false
                 break;
               }
             }
