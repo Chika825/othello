@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import styles from './index.module.css';
 
+const directions = [
+  [0, 1],
+  [1, 1],
+  [1, 0],
+  [-1, 0],
+  [0, -1],
+  [-1, -1],
+  [1, -1],
+  [-1, 1],
+];
+
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
@@ -34,6 +45,14 @@ const Home = () => {
       for (let x_count = 0; x_count < 8; x_count++) {
         // 自分のターンの色探す
         if (board[y_count][x_count] === turnColor) {
+          for (const dir of directions){
+            for (let n=1; n<8; n+=1) {
+              const dx = dir[0] * n
+              const dy = dir[1] * n
+              console.log("dx",dx,"dy",dy)
+              
+            }
+          }
           // 競合阻止
           // y-1,x check
           y_check = y_count;
