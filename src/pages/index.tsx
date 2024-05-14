@@ -224,7 +224,7 @@ const Home = () => {
             board[y_check + 1][x_check - 1] !== 0
           ) {
             console.log('y+1,x-1 check');
-            if (board[y_check + 1][x_check - 1] !== undefined) {
+            if (board[y_check + 1] !== undefined || board[x_check - 1] !== undefined) {
               if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
                 ++y_check;
                 --x_check;
@@ -263,7 +263,7 @@ const Home = () => {
             board[y_check - 1][x_check + 1] !== 0
           ) {
             console.log('y-1,x+1 check');
-            if (board[y_check - 1][x_check + 1] !== undefined) {
+            if (board[y_check - 1] !== undefined || board[x_check + 1] !== undefined) {
               if (board[y_check - 1][x_check + 1] === 3 - turnColor) {
                 --y_check;
                 ++x_check;
@@ -302,7 +302,7 @@ const Home = () => {
             board[y_check + 1][x_check + 1] !== 0
           ) {
             console.log('y+1,x-1 check');
-            if (board[y_check + 1][x_check - 1] !== undefined) {
+            if (board[y_check + 1] !== undefined || board[x_check - 1] !== undefined) {
               if (board[y_check + 1][x_check - 1] === 3 - turnColor) {
                 ++y_check;
                 ++x_check;

@@ -16,7 +16,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
-  const future = () => {
+  /*const future = () => {
     let color;
     let place;
     console.log('test');
@@ -28,7 +28,7 @@ const Home = () => {
         }
       }
     }
-  };
+  };*/
   //future();
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
@@ -386,8 +386,8 @@ const Home = () => {
   };
   //let black_p: number;
   //let white_p: number;
-  let score_points_b: number;
-  let score_points_w: number;
+  // let score_points_b: number;
+  // let score_points_w: number;
   let color: number;
   //black_p = 0;
   //white_p = 0;
