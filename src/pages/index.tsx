@@ -771,7 +771,7 @@ const Home = () => {
   const What_color = () => {
     return (
       <div>
-        <div className={styles.whatcolor}>次は{`${turnColor === 1 ? '黒' : '白'}`}の番です。</div>
+        <div className={styles.whatColor}>次は{`${turnColor === 1 ? '黒' : '白'}`}の番です。</div>
       </div>
     );
   };
