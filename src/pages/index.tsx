@@ -46,51 +46,59 @@ const Home = () => {
         // 自分のターンの色探す
         if (board[y_count][x_count] === turnColor) {
           for (const dir of directions) {
-            for (let n = 1; n < 8; n += 1) {
+            sameDirection: for (let n = 1; n < 8; n += 1) {
               const dx = dir[0] * n;
               const dy = dir[1] * n;
-              console.log('dx', dx, 'dy', dy);
-              // y-1,x check
-              y_check = y_count;
-              x_check = x_count;
+              // console.log('dx', dx, 'dy', dy);
+              // all directions check
+              y_check = y_count + dy;
+              x_check = x_count + dx;
               console.log(y_check, x_check, turnColor);
-              // 定義なしのところまで検索
-              while (board[y_check] !== undefined || board[y_check - 1][x_check] !== 0) {
-                console.log('y-1,x check');
-                // 相手の色なら検索続行
-                if (board[y_check - 1] !== undefined) {
-                  if (board[y_check - 1][x_check] === 3 - turnColor) {
-                    --y_check;
-                    flag = true;
-                    continue;
-                    // 自分の色が出てきたら中断
-                  } else if (board[y_check - 1][x_check] === turnColor) {
-                    console.log('stopped');
-                    break;
-                    // 空のセルで中断
-                  } else if (board[y_check - 1][x_check] === 0) {
-                    // 一度は相手の色を検出してないとbreak
-                    if (flag === true) {
-                      if (board[y_check][x_check] === turnColor || board[y_check][x_check] === 0) {
-                        console.log('cancel');
-                        break;
-                      } else {
-                        console.log('koroke');
-                        boardassist[y_check - 1][x_check] = 3;
+              // 定義なくなるまでベクトル伸ばす
+              if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
+                // 相手の色を通ることをflagで管理
+                if (board[y_check][x_check] === 3 - turnColor) {
+                  flag = true;
+                  // 自分の色になったら中断しベクトル再選択
+                } else if (board[y_check][x_check] === turnColor) {
+                  flag = false;
+                  break sameDirection;
+                  // 空セルヒット
+                } else if (board[y_check][x_check] === 0) {
+                  if (flag === true) {
+                    boardassist[y_check][x_check] = 3;
+                    flag = false;
+                    break sameDirection;
+                    // 予報地のまわりを確認しているがここにバグ？
+                    /*
+                    for (const sdir of directions) {
+                      const dx1 = sdir[0];
+                      const dy1 = sdir[1];
+                      if (
+                        board[y_count + dy1] === undefined &&
+                        board[y_count + dy1][x_count + dx1] === undefined &&
+                        (board[y_count + dy1][x_count + dx1] === turnColor ||
+                          board[y_count + dy1][x_count + dx1] === 0)
+                      ) {
                         flag = false;
-                        break;
+                        break sameDirection;
+                      } else {
+                        boardassist[y_check][x_check] = 3;
+                        flag = false;
+                        break sameDirection;
                       }
-                    }
-                    break;
+                    } */
+                  } else {
+                    break sameDirection;
                   }
-                  --y_check;
-                } else {
-                  break;
                 }
+              } else {
+                break;
               }
             }
           }
           // y-1,x check
+          /*
           y_check = y_count;
           x_check = x_count;
           console.log(y_check, x_check, turnColor);
@@ -384,7 +392,7 @@ const Home = () => {
             } else {
               break;
             }
-          }
+          } */
         }
       }
     }
@@ -734,7 +742,7 @@ const Home = () => {
     console.log('---Start Check---');
     color_reverse();
     setBoard(newBoard);
-    future();
+    // future();
     if (color_change === true) {
       setTurnColor(3 - turnColor);
       console.log('--color-change');
