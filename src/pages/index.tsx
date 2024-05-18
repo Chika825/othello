@@ -36,8 +36,8 @@ const Home = () => {
   ]);
 
   const future = () => {
-    let y_check;
-    let x_check;
+    let y_f_check;
+    let x_f_check;
     let flag;
     const boardassist = structuredClone(board);
 
@@ -50,22 +50,22 @@ const Home = () => {
               const dx = dir[0] * n;
               const dy = dir[1] * n;
               // all directions check
-              y_check = y_count + dy;
-              x_check = x_count + dx;
+              y_f_check = y_count + dy;
+              x_f_check = x_count + dx;
               // console.log(y_check, x_check, turnColor);
               // 定義なくなるまでベクトル伸ばす
-              if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
+              if (board[y_f_check] !== undefined && board[y_f_check][x_f_check] !== undefined) {
                 // 相手の色を通ることをflagで管理
-                if (board[y_check][x_check] === 3 - turnColor) {
+                if (board[y_f_check][x_f_check] === 3 - turnColor) {
                   flag = true;
                   // 自分の色になったら中断しベクトル再選択
-                } else if (board[y_check][x_check] === turnColor) {
+                } else if (board[y_f_check][x_f_check] === turnColor) {
                   flag = false;
                   break sameDirection;
                   // 空セルヒット
-                } else if (board[y_check][x_check] === 0) {
+                } else if (board[y_f_check][x_f_check] === 0) {
                   if (flag === true) {
-                    boardassist[y_check][x_check] = 3;
+                    boardassist[y_f_check][x_f_check] = 3;
                     flag = false;
                     break sameDirection;
                   } else {
@@ -86,52 +86,44 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
     const newBoard = structuredClone(board);
-    // let color_change;
-    // color_change = false;
+    let y_check, x_check, color_flag;
+    color_flag = false;
+    if (board[y][x] === turnColor || board[y][x] === 3 - turnColor || futureboard[y][x] !== 3) {
+      console.log('already placed or error');
+    } else {
+      for (const dir of directions) {
+        for (let n = 1; n < 8; n += 1) {
+          const dx = dir[0] * n;
+          const dy = dir[1] * n;
+          // all directions check
+          y_check = y + dy;
+          x_check = x + dx;
 
-    const color_reverse = () => {
-      let y_check, x_check, color_flag;
-      color_flag = false;
-      if (board[y][x] === turnColor || board[y][x] === 3 - turnColor) {
-        console.log('already placed');
-      } else {
-        for (const dir of directions) {
-          for (let n = 1; n < 8; n += 1) {
-            const dx = dir[0] * n;
-            const dy = dir[1] * n;
-            // all directions check
-            y_check = y + dy;
-            x_check = x + dx;
+          if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
+            if (board[y_check][x_check] === turnColor) {
+              console.log(y_check, x_check);
 
-            if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
-              if (board[y_check][x_check] === turnColor) {
-                console.log(y_check, x_check);
-
-                for (let i = 0; i <= n; i += 1) {
-                  const rex = -dir[0] * i + x_check;
-                  const rey = -dir[1] * i + y_check;
-                  if (board[rey][rex] === 3 - turnColor) {
-                    color_flag = true;
-                  }
-                  if (color_flag === true) {
-                    newBoard[rey][rex] = turnColor;
-                    newBoard[y][x] = turnColor;
-                    setTurnColor(3 - turnColor);
-                    color_flag = false;
-                  }
+              for (let i = 0; i <= n; i += 1) {
+                const rex = -dir[0] * i + x_check;
+                const rey = -dir[1] * i + y_check;
+                if (board[rey][rex] === 3 - turnColor) {
+                  color_flag = true;
+                }
+                if (color_flag === true) {
+                  newBoard[rey][rex] = turnColor;
+                  newBoard[y][x] = turnColor;
+                  setTurnColor(3 - turnColor);
+                  color_flag = false;
                 }
               }
             }
           }
         }
       }
-    };
+      setBoard(newBoard);
+    }
 
-    console.log('---Start Check---');
-    color_reverse();
-    setBoard(newBoard);
-    // future();
-    console.log('---Ended Check---');
+    // color_reverse();
     future();
 
     //1.めくれる、点数 2.候補地 3.パス、2回パス
