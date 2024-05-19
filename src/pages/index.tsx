@@ -130,12 +130,13 @@ const Home = () => {
   };
   let black_p: number;
   let white_p: number;
-  let score_points_b: number;
-  let score_points_w: number;
   let color: number;
-  black_p = 0;
-  white_p = 0;
+  let finish;
+  let finish_flag;
   const Score = () => {
+    black_p = 0;
+    white_p = 0;
+    finish_flag = true;
     for (let row = 0; row < 8; row++) {
       //console.log('korroke');
       for (let column = 0; column < 8; column++) {
@@ -145,14 +146,19 @@ const Home = () => {
         } else if (color === 2) {
           ++white_p;
         }
+        finish = futureboard[row][column];
+        if (finish === 3) {
+          finish_flag = false;
+        }
       }
     }
-    score_points_b = black_p;
-    score_points_w = white_p;
     return (
-      <div className={styles.score} suppressHydrationWarning={true}>
-        score: 黒:{score_points_b / 2} 白:{score_points_w / 2}
-      </div>
+      <>
+        <div className={styles.score}>
+          score: 黒:{black_p} 白:{white_p}
+        </div>
+        <div>{`${finish_flag === true ? '置けるマスがなくなったため終了します' : ''}`}</div>
+      </>
     );
   };
   const What_color = () => {
