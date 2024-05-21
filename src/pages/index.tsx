@@ -24,9 +24,9 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-  const futureboard = structuredClone(board);
 
-  const future = () => {
+  const future = (turnColor: number) => {
+    const boardassist = structuredClone(board);
     let y_f_check;
     let x_f_check;
     let flag;
@@ -55,7 +55,7 @@ const Home = () => {
                   // 空セルヒット
                 } else if (board[y_f_check][x_f_check] === 0) {
                   if (flag === true) {
-                    futureboard[y_f_check][x_f_check] = 3;
+                    boardassist[y_f_check][x_f_check] = 3;
                     flag = false;
                     break sameDirection;
                   } else {
@@ -71,8 +71,9 @@ const Home = () => {
         }
       }
     }
+    return boardassist;
   };
-  future();
+  const futureboard = future(turnColor);
 
   const clickHandler = (x: number, y: number) => {
     console.log(y, x);
@@ -113,9 +114,6 @@ const Home = () => {
       }
       setBoard(newBoard);
     }
-
-    // color_reverse();
-
     //1.めくれる、点数 2.候補地 3.パス、2回パス
   };
   let black_p: number;
