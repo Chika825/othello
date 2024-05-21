@@ -15,11 +15,11 @@ const directions = [
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
+    [1, 2, 0, 0, 0, 0, 0, 0],
+    [2, 2, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 2, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -120,12 +120,16 @@ const Home = () => {
   let white_p: number;
   let color: number;
   let finish;
-  let finish_flag;
+  // let finish_flag;
+  let currentPassed;
+  let nextPassed;
   const Score = () => {
     black_p = 0;
     white_p = 0;
-    finish_flag = true;
-    for (let row = 0; row < 8; row++) {
+    currentPassed = true;
+    nextPassed = true;
+    // finish_flag = true;
+    scoreResult: for (let row = 0; row < 8; row++) {
       //console.log('korroke');
       for (let column = 0; column < 8; column++) {
         color = board[row][column];
@@ -136,16 +140,32 @@ const Home = () => {
         }
         finish = futureboard[row][column];
         if (finish === 3) {
-          finish_flag = false;
+          //finish_flag = false;
+          currentPassed = false;
+        }
+        if (currentPassed === true) {
+          const futureboard = future(3 - turnColor);
+          for (let row = 0; row < 8; row++) {
+            for (let column = 0; column < 8; column++) {
+              finish = futureboard[row][column];
+              if (finish === 3) {
+                nextPassed = false;
+                break scoreResult;
+              }
+            }
+          }
         }
       }
+    }
+    if (nextPassed === true) {
+      console.log('owari');
     }
     return (
       <>
         <div className={styles.score}>
           score: 黒:{black_p} 白:{white_p}
         </div>
-        <div>{`${finish_flag === true ? '置けるマスがなくなったため終了します' : ''}`}</div>
+        <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : ''}`}</div>
       </>
     );
   };
