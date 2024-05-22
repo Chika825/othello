@@ -154,10 +154,10 @@ const Home = () => {
       colorPass = turnColor;
       if (colorPass === 1) {
         ++blackPass;
-        setTurnColor(3-turnColor)
+        setTurnColor(3 - turnColor);
       } else if (colorPass === 2) {
         ++whitePass;
-        setTurnColor(3-turnColor)
+        setTurnColor(3 - turnColor);
       }
       if (blackPass > 2) {
         alert('黒のパス回数が2回を超えたため終了します');
