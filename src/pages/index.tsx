@@ -160,10 +160,12 @@ const Home = () => {
         setTurnColor(3 - turnColor);
       }
       if (blackPass > 2) {
-        alert('黒のパス回数が2回を超えたため終了します');
+        // alert('黒のパス回数が2回を超えたため終了します');
+        console.log('black pass twice');
         finish_flag = true;
       } else if (whitePass > 2) {
-        alert('白のパス回数が2回を超えたため終了します');
+        // alert('白のパス回数が2回を超えたため終了します');
+        console.log('white pass twice');
         finish_flag = true;
       }
       finish = 0;
@@ -181,7 +183,8 @@ const Home = () => {
       }
     }
     if (nextPassed === true) {
-      alert('両者置けるマスがなくなったため終了します。');
+      // alert('両者置けるマスがなくなったため終了します。');
+      console.log('both finish');
       finish_flag = true;
       // console.log('owari');
     }
