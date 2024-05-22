@@ -119,53 +119,76 @@ const Home = () => {
   let black_p: number;
   let white_p: number;
   let color: number;
-  let finish;
-  // let finish_flag;
+  let finish: number;
+  let finish_flag;
+  finish_flag = false;
   let currentPassed;
   let nextPassed;
+  let colorPass;
+  let blackPass = 0;
+  let whitePass = 0;
   const Score = () => {
     black_p = 0;
     white_p = 0;
-    currentPassed = true;
-    nextPassed = true;
+    finish = 0;
+    currentPassed = false;
+    nextPassed = false;
     // finish_flag = true;
-    scoreResult: for (let row = 0; row < 8; row++) {
+    for (let row = 0; row < 8; row++) {
       //console.log('korroke');
       for (let column = 0; column < 8; column++) {
-        color = board[row][column];
+        color = futureboard[row][column];
         if (color === 1) {
           ++black_p;
         } else if (color === 2) {
           ++white_p;
+        } else if (color === 3) {
+          ++finish;
         }
-        finish = futureboard[row][column];
-        if (finish === 3) {
-          //finish_flag = false;
-          currentPassed = false;
-        }
-        if (currentPassed === true) {
-          const futureboard = future(3 - turnColor);
-          for (let row = 0; row < 8; row++) {
-            for (let column = 0; column < 8; column++) {
-              finish = futureboard[row][column];
-              if (finish === 3) {
-                nextPassed = false;
-                break scoreResult;
-              }
-            }
+      }
+    }
+    // finish = futureboard[row][column];
+    if (finish === 0) {
+      //finish_flag = false;
+      currentPassed = true;
+      colorPass = turnColor;
+      if (colorPass === 1) {
+        ++blackPass;
+      } else if (colorPass === 2) {
+        ++whitePass;
+      }
+      if (blackPass > 2) {
+        alert('黒のパス回数が2回を超えたため終了します');
+        finish_flag = true;
+      } else if (whitePass > 2) {
+        alert('白のパス回数が2回を超えたため終了します');
+        finish_flag = true;
+      }
+      finish = 0;
+    }
+    if (currentPassed === true) {
+      const futureboard = future(3 - turnColor);
+      for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
+          finish = futureboard[row][column];
+          if (finish === 0) {
+            nextPassed = true;
+            finish = 0;
           }
         }
       }
     }
     if (nextPassed === true) {
-      console.log('owari');
+      alert('両者置けるマスがなくなったため終了します。');
+      finish_flag = true;
+      // console.log('owari');
     }
     return (
       <>
         <div className={styles.score}>
           score: 黒:{black_p} 白:{white_p}
         </div>
-        <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : ''}`}</div>
+        <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : `黒のパス: ${blackPass} 白のパス: ${whitePass}`}`}</div>
       </>
     );
   };
@@ -178,7 +201,7 @@ const Home = () => {
   };
   return (
     <div className={styles.container}>
-      <div className={styles.boardStyle}>
+      <div className={`${finish_flag === true ? styles.finishBoardStyle : styles.boardStyle}`}>
         {futureboard.map((row, y) =>
           row.map((color, x) => (
             <div className={styles.cellStyle} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>

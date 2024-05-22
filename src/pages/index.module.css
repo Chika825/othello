@@ -19,6 +19,18 @@
   background-color: green;
 }
 
+.finishBoardStyle {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vmin;
+  max-width: 90vmin;
+  height: 100vmin;
+  max-height: 90vmin;
+  margin: 20px;
+  pointer-events: none;
+  background-color: rgb(0 128 0/ 50%);
+}
+
 .cellStyle {
   display: flex;
   align-items: center;
