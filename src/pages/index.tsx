@@ -192,12 +192,14 @@ const Home = () => {
         color = futureboard[row][column];
         if (color === 3) {
           ++finish;
-          console.log(finish)
+          console.log(finish);
         }
       }
     }
     if (finish === 0) {
       nextPassed = true;
+    } else {
+      currentPassed = false;
     }
   }
   if (nextPassed === true) {
