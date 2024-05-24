@@ -166,10 +166,10 @@ const Home = () => {
       colorPass = turnColor;
       if (colorPass === 1) {
         ++blackPass;
-        setTurnColor(3 - turnColor);
+        console.log('black passed');
       } else if (colorPass === 2) {
         ++whitePass;
-        setTurnColor(3 - turnColor);
+        console.log('white passed');
       }
       if (blackPass > 2) {
         // alert('黒のパス回数が2回を超えたため終了します');
@@ -185,18 +185,19 @@ const Home = () => {
   }
 
   if (currentPassed === true) {
-    const futureboard = future(3 - turnColor);
+    // const futureboard = future(3 - turnColor);
+    console.log('current pass true');
     for (let row = 0; row < 8; row++) {
       for (let column = 0; column < 8; column++) {
         color = futureboard[row][column];
         if (color === 3) {
           ++finish;
+          console.log(finish)
         }
       }
     }
     if (finish === 0) {
       nextPassed = true;
-      finish = 0;
     }
   }
   if (nextPassed === true) {
