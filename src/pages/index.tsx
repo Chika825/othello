@@ -14,6 +14,7 @@ const directions = [
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
+
   const [board, setBoard] = useState([
     [1, 2, 0, 0, 0, 0, 0, 0],
     [2, 2, 0, 0, 0, 0, 0, 0],
@@ -24,6 +25,17 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+  /*
+  const [board, setBoard] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+  ]); */
 
   const future = (turnColor: number) => {
     const boardassist = structuredClone(board);
@@ -93,7 +105,7 @@ const Home = () => {
 
           if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
             if (board[y_check][x_check] === turnColor) {
-              console.log(y_check, x_check);
+              // console.log(y_check, x_check);
 
               for (let i = 0; i <= n; i += 1) {
                 const rex = -dir[0] * i + x_check;
@@ -120,20 +132,20 @@ const Home = () => {
   let white_p: number;
   let color: number;
   let finish: number;
-  let finish_flag;
+  let finish_flag: boolean;
   finish_flag = false;
   let currentPassed;
   let nextPassed;
   let colorPass;
   let blackPass = 0;
   let whitePass = 0;
-  const Score = () => {
-    black_p = 0;
-    white_p = 0;
-    finish = 0;
-    currentPassed = false;
-    nextPassed = false;
-    // finish_flag = true;
+  black_p = 0;
+  white_p = 0;
+  finish = 0;
+  currentPassed = false;
+  nextPassed = false;
+  // finish_flag = true;
+  if (finish_flag === false) {
     for (let row = 0; row < 8; row++) {
       //console.log('korroke');
       for (let column = 0; column < 8; column++) {
@@ -170,43 +182,33 @@ const Home = () => {
       }
       finish = 0;
     }
-    if (currentPassed === true) {
-      const futureboard = future(3 - turnColor);
-      for (let row = 0; row < 8; row++) {
-        for (let column = 0; column < 8; column++) {
-          finish = futureboard[row][column];
-          if (finish === 0) {
-            nextPassed = true;
-            finish = 0;
-          }
+  }
+
+  if (currentPassed === true) {
+    const futureboard = future(3 - turnColor);
+    for (let row = 0; row < 8; row++) {
+      for (let column = 0; column < 8; column++) {
+        color = futureboard[row][column];
+        if (color === 3) {
+          ++finish;
         }
       }
     }
-    if (nextPassed === true) {
-      // alert('両者置けるマスがなくなったため終了します。');
-      console.log('both finish');
-      finish_flag = true;
-      // console.log('owari');
+    if (finish === 0) {
+      nextPassed = true;
+      finish = 0;
     }
-    return (
-      <>
-        <div className={styles.score}>
-          score: 黒:{black_p} 白:{white_p}
-        </div>
-        <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : `黒のパス: ${blackPass} 白のパス: ${whitePass}`}`}</div>
-      </>
-    );
-  };
-  const What_color = () => {
-    return (
-      <div>
-        <div className={styles.whatColor}>次は{`${turnColor === 1 ? '黒' : '白'}`}の番です。</div>
-      </div>
-    );
-  };
+  }
+  if (nextPassed === true) {
+    // alert('両者置けるマスがなくなったため終了します。');
+    console.log('both finish');
+    finish_flag = true;
+    // console.log('owari');
+  }
+
   return (
     <div className={styles.container}>
-      <div className={`${finish_flag === true ? styles.finishBoardStyle : styles.boardStyle}`}>
+      <div className={`${finish_flag ? styles.finishBoardStyle : styles.boardStyle}`}>
         {futureboard.map((row, y) =>
           row.map((color, x) => (
             <div className={styles.cellStyle} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
@@ -220,8 +222,12 @@ const Home = () => {
           )),
         )}
       </div>
-      <Score />
-      <What_color />
+      <div className={styles.score}>
+        score: 黒:{black_p} 白:{white_p}
+      </div>
+      <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : `黒のパス: ${blackPass} 白のパス: ${whitePass}`}`}</div>
+
+      <div className={styles.whatColor}>次は{`${turnColor === 1 ? '黒' : '白'}`}の番です。</div>
     </div>
   );
 };
