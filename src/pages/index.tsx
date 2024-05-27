@@ -14,7 +14,6 @@ const directions = [
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
-
   const [board, setBoard] = useState([
     [1, 2, 0, 0, 0, 0, 0, 0],
     [2, 2, 0, 0, 0, 0, 0, 0],
@@ -166,26 +165,27 @@ const Home = () => {
       colorPass = turnColor;
       if (colorPass === 1) {
         ++blackPass;
-        console.log('black passed');
+        console.log('black passed', blackPass);
       } else if (colorPass === 2) {
         ++whitePass;
-        console.log('white passed');
+        console.log('white passed', whitePass);
       }
-      if (blackPass > 2) {
+      if (blackPass > 3) {
         // alert('黒のパス回数が2回を超えたため終了します');
         console.log('black pass twice');
         finish_flag = true;
-      } else if (whitePass > 2) {
+      } else if (whitePass > 3) {
         // alert('白のパス回数が2回を超えたため終了します');
         console.log('white pass twice');
         finish_flag = true;
       }
       finish = 0;
+      // setTurnColor(3 - turnColor);
     }
   }
 
   if (currentPassed === true) {
-    // const futureboard = future(3 - turnColor);
+    const futureboard = future(3 - turnColor);
     console.log('current pass true');
     for (let row = 0; row < 8; row++) {
       for (let column = 0; column < 8; column++) {
@@ -200,6 +200,7 @@ const Home = () => {
       nextPassed = true;
     } else {
       currentPassed = false;
+      setTurnColor(3 - turnColor);
     }
   }
   if (nextPassed === true) {
