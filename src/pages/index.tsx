@@ -193,12 +193,12 @@ const Home = () => {
           } else {
             if (colorPass === 1) {
               setBlackPass(blackPass + 1);
-              alert("黒のターンをパスします")
+              alert('黒のターンをパスします');
               // ++blackPass;
               console.log('black passed', blackPass);
             } else if (colorPass === 2) {
               setWhitePass(whitePass + 1);
-              alert("白のターンをパスします")
+              alert('白のターンをパスします');
               // ++whitePass;
               console.log('white passed', whitePass);
             }
