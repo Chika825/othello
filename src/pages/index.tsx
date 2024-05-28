@@ -107,7 +107,6 @@ const Home = () => {
           if (board[y_check] !== undefined && board[y_check][x_check] !== undefined) {
             if (board[y_check][x_check] === turnColor) {
               // console.log(y_check, x_check);
-
               for (let i = 0; i <= n; i += 1) {
                 const rex = -dir[0] * i + x_check;
                 const rey = -dir[1] * i + y_check;
@@ -164,55 +163,54 @@ const Home = () => {
     if (finish === 0) {
       //finish_flag = false;
       currentPassed = true;
-      colorPass = turnColor;
-      if (colorPass === 1) {
-        setBlackPass(blackPass + 1);
-        // ++blackPass;
-        console.log('black passed', blackPass);
-      } else if (colorPass === 2) {
-        setWhitePass(whitePass + 1);
-        // ++whitePass;
-        console.log('white passed', whitePass);
-      }
-      if (blackPass > 3) {
-        // alert('黒のパス回数が2回を超えたため終了します');
-        console.log('black pass twice');
-        finish_flag = true;
-      } else if (whitePass > 3) {
-        // alert('白のパス回数が2回を超えたため終了します');
-        console.log('white pass twice');
-        finish_flag = true;
-      }
-      finish = 0;
-      // setTurnColor(3 - turnColor);
-    }
-  }
-
-  if (currentPassed === true) {
-    const futureboard = future(3 - turnColor);
-    console.log('current pass true');
-    for (let row = 0; row < 8; row++) {
-      for (let column = 0; column < 8; column++) {
-        color = futureboard[row][column];
-        if (color === 3) {
-          ++finish;
-          console.log(finish);
+      if (currentPassed === true) {
+        const futureboard = future(3 - turnColor);
+        console.log('current pass true');
+        for (let row = 0; row < 8; row++) {
+          for (let column = 0; column < 8; column++) {
+            color = futureboard[row][column];
+            if (color === 3) {
+              ++finish;
+              console.log(finish);
+            }
+          }
+        }
+        if (finish === 0) {
+          nextPassed = true;
+          alert('両者置けるマスがなくなったため終了します。');
+          console.log('both finish');
+          finish_flag = true;
+        } else {
+          colorPass = turnColor;
+          if (blackPass > 2) {
+            alert('黒のパス回数が2回を超えたため終了します');
+            console.log('black pass twice');
+            finish_flag = true;
+          } else if (whitePass > 2) {
+            alert('白のパス回数が2回を超えたため終了します');
+            console.log('white pass twice');
+            finish_flag = true;
+          } else {
+            if (colorPass === 1) {
+              setBlackPass(blackPass + 1);
+              alert("黒のターンをパスします")
+              // ++blackPass;
+              console.log('black passed', blackPass);
+            } else if (colorPass === 2) {
+              setWhitePass(whitePass + 1);
+              alert("白のターンをパスします")
+              // ++whitePass;
+              console.log('white passed', whitePass);
+            }
+          }
+          finish = 0;
+          // setTurnColor(3 - turnColor);
+          currentPassed = false;
+          setTurnColor(3 - turnColor);
+          // future(3-turnColor)
         }
       }
     }
-    if (finish === 0) {
-      nextPassed = true;
-    } else {
-      currentPassed = false;
-      setTurnColor(3 - turnColor);
-      // future(3-turnColor)
-    }
-  }
-  if (nextPassed === true) {
-    // alert('両者置けるマスがなくなったため終了します。');
-    console.log('both finish');
-    finish_flag = true;
-    // console.log('owari');
   }
 
   return (
