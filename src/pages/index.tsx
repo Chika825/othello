@@ -13,6 +13,8 @@ const directions = [
 ];
 
 const Home = () => {
+  const [blackPass, setBlackPass] = useState(0);
+  const [whitePass, setWhitePass] = useState(0);
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
     [1, 2, 0, 0, 0, 0, 0, 0],
@@ -136,8 +138,8 @@ const Home = () => {
   let currentPassed;
   let nextPassed;
   let colorPass;
-  let blackPass = 0;
-  let whitePass = 0;
+  // let blackPass = 0;
+  // let whitePass = 0;
   black_p = 0;
   white_p = 0;
   finish = 0;
@@ -164,10 +166,12 @@ const Home = () => {
       currentPassed = true;
       colorPass = turnColor;
       if (colorPass === 1) {
-        ++blackPass;
+        setBlackPass(blackPass + 1);
+        // ++blackPass;
         console.log('black passed', blackPass);
       } else if (colorPass === 2) {
-        ++whitePass;
+        setWhitePass(whitePass + 1);
+        // ++whitePass;
         console.log('white passed', whitePass);
       }
       if (blackPass > 3) {
@@ -201,6 +205,7 @@ const Home = () => {
     } else {
       currentPassed = false;
       setTurnColor(3 - turnColor);
+      // future(3-turnColor)
     }
   }
   if (nextPassed === true) {
