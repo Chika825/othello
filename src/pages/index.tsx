@@ -16,7 +16,7 @@ const Home = () => {
   const [blackPass, setBlackPass] = useState(0);
   const [whitePass, setWhitePass] = useState(0);
   const [turnColor, setTurnColor] = useState(1);
-  const [board, setBoard] = useState([
+  /* const [board, setBoard] = useState([
     [1, 2, 0, 0, 0, 0, 0, 0],
     [2, 2, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -25,8 +25,8 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
-  /*
+  ]); */
+
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,7 +36,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-  ]); */
+  ]);
 
   const future = (turnColor: number) => {
     const boardassist = structuredClone(board);
@@ -234,7 +234,9 @@ const Home = () => {
       </div>
       <div>{`${nextPassed === true ? '置けるマスがなくなったため終了します' : `黒のパス: ${blackPass} 白のパス: ${whitePass}`}`}</div>
 
-      <div className={styles.whatColor}>次は{`${turnColor === 1 ? '黒' : '白'}`}の番です。</div>
+      <div
+        className={styles.whatColor}
+      >{`${turnColor === 1 && !nextPassed ? '次は黒の番です。' : turnColor === 2 && !nextPassed ? '次は白の番です。' : ''}`}</div>
     </div>
   );
 };
